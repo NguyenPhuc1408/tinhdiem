@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Cụ Tính Điểm Xét Tốt Nghiệp THPT Tự Động</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 600px; background: #fff; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #555; }
+        input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #27ae60; border: none; color: white; font-size: 18px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 15px; transition: background 0.3s; }
+        button:hover { background: #219150; }
+        .result { margin-top: 25px; padding: 15px; border-radius: 4px; font-size: 18px; font-weight: bold; text-align: center; display: none; }
+        .pass { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .fail { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .ads-slot { margin: 20px 0; padding: 15px; background: #eceff1; border: 1px dashed #b0bec5; text-align: center; color: #78909c; font-size: 14px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>TÍNH ĐIỂM TỐT NGHIỆP THPT 2026</h2>
+    
+    <div class="ads-slot">
+        <a href="https://pub.accesstrade.vn" target="_blank" style="color:#27ae60; font-weight:bold; text-decoration:none;">👉 BẤM VÀO ĐÂY ĐỂ NHẬN BỘ ĐỀ THI THỬ THPT 2026 MIỄN PHÍ!</a>
+    </div>
+
+    <div class="form-group">
+        <label>Điểm môn Toán:</label>
+        <input type="number" id="toan" step="0.1" min="0" max="10" placeholder="Nhập điểm Toán">
+    </div>
+    <div class="form-group">
+        <label>Điểm môn Ngữ Văn:</label>
+        <input type="number" id="van" step="0.1" min="0" max="10" placeholder="Nhập điểm Văn">
+    </div>
+    <div class="form-group">
+        <label>Điểm môn Ngoại Ngữ:</label>
+        <input type="number" id="anh" step="0.1" min="0" max="10" placeholder="Nhập điểm Anh">
+    </div>
+    <div class="form-group">
+        <label>Điểm môn Tổ hợp (Trung bình cộng):</label>
+        <input type="number" id="tohop" step="0.1" min="0" max="10" placeholder="Nhập điểm TB tổ hợp">
+    </div>
+    <div class="form-group">
+        <label>Điểm trung bình cả năm lớp 12:</label>
+        <input type="number" id="diem12" step="0.1" min="0" max="10" placeholder="Nhập ĐTB lớp 12">
+    </div>
+    <div class="form-group">
+        <label>Điểm ưu tiên (nếu có):</label>
+        <input type="number" id="uutien" step="0.1" min="0" max="5" value="0">
+    </div>
+    <div class="form-group">
+        <label>Điểm khuyến khích (nghề, giải Olympic... nếu có):</label>
+        <input type="number" id="khuyenkhich" step="0.1" min="0" max="5" value="0">
+    </div>
+
+    <button onclick="tinhDiem()">XEM KẾT QUẢ</button>
+
+    <div id="ketqua" class="result"></div>
+</div>
+
+<script>
+function tinhDiem() {
+    let toan = parseFloat(document.getElementById('toan').value) || 0;
+    let van = parseFloat(document.getElementById('van').value) || 0;
+    let anh = parseFloat(document.getElementById('anh').value) || 0;
+    let tohop = parseFloat(document.getElementById('tohop').value) || 0;
+    let diem12 = parseFloat(document.getElementById('diem12').value) || 0;
+    let uutien = parseFloat(document.getElementById('uutien').value) || 0;
+    let khuyenkhich = parseFloat(document.getElementById('khuyenkhich').value) || 0;
+
+    if (toan <= 1 || van <= 1 || anh <= 1 || tohop <= 1) {
+        let resDiv = document.getElementById('ketqua');
+        resDiv.innerHTML = "KẾT QUẢ: TRƯỢT TỐT NGHIỆP<br><span style='font-size:14px; font-weight:normal;'>Lý do: Bạn đã bị dính điểm liệt (<= 1 điểm).</span>";
+        resDiv.className = "result fail";
+        resDiv.style.display = "block";
+        return;
+    }
+
+    let tong4Mon = toan + van + anh + tohop;
+    let diemXetTotNghiep = (((tong4Mon + khuyenkhich) / 4) * 7 + (diem12 * 3)) / 10 + uutien;
+    diemXetTotNghiep = Math.round(diemXetTotNghiep * 100) / 100;
+
+    let resDiv = document.getElementById('ketqua');
+    
+    if (diemXetTotNghiep >= 5) {
+        resDiv.innerHTML = "ĐIỂM XÉT TỐT NGHIỆP: " + diemXetTotNghiep + "<br>KẾT QUẢ: ĐẬU TỐT NGHIỆP! 🎉";
+        resDiv.className = "result pass";
+    } else {
+        resDiv.innerHTML = "ĐIỂM XÉT TỐT NGHIỆP: " + diemXetTotNghiep + "<br>KẾT QUẢ: TRƯỢT TỐT NGHIỆP (Điểm dưới 5.0)";
+        resDiv.className = "result fail";
+    }
+    resDiv.style.display = "block";
+}
+</script>
+
+</body>
+</html>
